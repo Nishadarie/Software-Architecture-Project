@@ -62,7 +62,7 @@ button:hover {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-image: url("C:\Users\ASUS\Desktop\book-fair\src\assets\login-bg.jpg"); 
+  background-image: url('../assets/login-bg.jpg'); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
