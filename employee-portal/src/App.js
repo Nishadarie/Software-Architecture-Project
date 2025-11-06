@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import EmployeeLogin from "./pages/EmployeeLogin";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
-import ProtectedRoute from "./components/ProtectedRoute"; // ✅ import it here
+import GenreSelection from "./pages/GenreSelection";
 
 function App() {
   return (
@@ -10,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<EmployeeLogin />} />
         <Route path="/dashboard" element={<EmployeeDashboard />} />
+        <Route path="/genres" element={<GenreSelection />} />
       </Routes>
     </BrowserRouter>
   );
