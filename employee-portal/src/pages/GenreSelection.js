@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./GenreSelection.css";
+import "../styles/GenreSelection.css";
 
 function GenreSelection() {
     const [selected, setSelected] = useState([]);

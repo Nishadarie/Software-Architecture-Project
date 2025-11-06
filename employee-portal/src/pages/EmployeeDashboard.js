@@ -1,5 +1,5 @@
 import react from "react";
-import "./EmployeeDashboard.css"
+import "../styles/EmployeeDashboard.css"
 
 function EmployeeDashboard() {
     return (

@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 import { useNavigate } from "react-router-dom";
-import "./EmployeeLogin.css";
+import "../styles/EmployeeLogin.css";
 import { loginEmployee } from "../utils/api";
 
 function EmployeeLogin() {
