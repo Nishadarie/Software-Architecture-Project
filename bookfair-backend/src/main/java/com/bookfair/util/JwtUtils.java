@@ -1,6 +1,9 @@
 package com.bookfair.util;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -20,12 +23,16 @@ public class JwtUtils {
     @Value("${jwt.refresh-expiration-ms}")
     private long refreshTokenExpirationMs;
 
-    // Generate signing key from secret
+    /**
+     * Generates a signing key from the secret string using HMAC-SHA algorithm.
+     */
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
-    // Generate Access Token
+    /**
+     * Generate Access Token for a user with userId and role.
+     */
     public String generateToken(String userId, String role) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + accessTokenExpirationMs);
@@ -39,7 +46,9 @@ public class JwtUtils {
                 .compact();
     }
 
-    // Generate Refresh Token
+    /**
+     * Generate Refresh Token for a user with userId and role.
+     */
     public String generateRefreshToken(String userId, String role) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + refreshTokenExpirationMs);
@@ -54,33 +63,49 @@ public class JwtUtils {
                 .compact();
     }
 
-    // Validate Token
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
+    /**
+     * Validate a token. Throws exception if invalid.
+     */
+    public void validateToken(String token) throws JwtException {
+        Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token);
+        // If parseClaimsJws does not throw, the token is valid
     }
 
-    // Extract User ID
-    public String getUserIdFromToken(String token) {
+    /**
+     * Extract Claims from token.
+     */
+    public Claims getClaimsFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody();
     }
 
-    // Extract Role
+    /**
+     * Extract User ID from token.
+     */
+    public String getUserIdFromToken(String token) {
+        Claims claims = getClaimsFromToken(token);
+        return claims.getSubject();
+    }
+
+    /**
+     * Extract Role from token.
+     */
     public String getRoleFromToken(String token) {
-        return (String) Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("role");
+        Claims claims = getClaimsFromToken(token);
+        return claims.get("role", String.class);
+    }
+
+    /**
+     * Extract Token Type (optional: access or refresh)
+     */
+    public String getTokenTypeFromToken(String token) {
+        Claims claims = getClaimsFromToken(token);
+        return claims.get("type", String.class);
     }
 }

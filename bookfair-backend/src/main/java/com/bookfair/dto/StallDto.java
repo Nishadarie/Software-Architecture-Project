@@ -1,5 +1,7 @@
 package com.bookfair.dto;
+import lombok.Data;
 
+@Data
 public class StallDto {
     public String id;
     public String name;

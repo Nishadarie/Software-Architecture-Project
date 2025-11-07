@@ -3,7 +3,6 @@ com\bookfair\entity\Stall.class
 com\bookfair\repository\StallRepository.class
 com\bookfair\service\impl\ReservationServiceImpl.class
 com\bookfair\util\JwtUtils.class
-com\bookfair\config\SecurityConfig.class
 com\bookfair\util\QRCodeGenerator.class
 com\bookfair\config\OpenApiConfig.class
 com\bookfair\dto\ReservationResponse.class
