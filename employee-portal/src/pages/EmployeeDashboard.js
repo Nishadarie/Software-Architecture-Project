@@ -1,14 +1,28 @@
-import react from "react";
-import "../styles/EmployeeDashboard.css"
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
+import ViewAllStalls from "./ViewAllStalls";
+import Reservations from "./Reservations";
+import UserManagement from "./Usermanagement";
+import GenreSelection from "./GenreSelection";
+import '../styles/Dashboard.css';
+
 
 function EmployeeDashboard() {
     return (
         <div className="dashboard-container">
-            <h1>Welcome,Employee!</h1>
-            <div className="card-grid">
-                <div className="card">Manage Reservation</div>
-                <div className="card">View Assigned Stalls</div>
-                <div className="card">Check Performance</div>
+            <Sidebar />
+            <div className="dashboard-main">
+                <Header />
+                <div className="dashboard-content">
+                    <Routes>
+                        <Route path="/" element={<ViewAllStalls />} />
+                        <Route path="/reservations" element={<Reservations />} />
+                        <Route path="/users" element={<UserManagement />} />
+                        <Route path="/genres" element={<GenreSelection />} />
+                    </Routes>
+                </div>
             </div>
         </div>
     )
