@@ -15,5 +15,4 @@ public class Business {
     private String name;
     private String contactEmail;
     private String contactPhone;
-    // getters/setters omitted
 }

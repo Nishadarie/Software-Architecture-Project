@@ -17,5 +17,4 @@ public class Stall {
     private Integer mapX;
     private Integer mapY;
     private Integer price;
-    // getters/setters omitted
 }

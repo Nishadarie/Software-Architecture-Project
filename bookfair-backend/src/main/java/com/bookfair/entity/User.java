@@ -16,8 +16,5 @@ public class User {
     private String email;
     private String password;
     private String role; // USER, EMPLOYEE, ADMIN
-
     private String businessId;
-
-    // getters and setters omitted for brevity
 }
