@@ -4,7 +4,7 @@ import "../styles/GenreSelection.css";
 function GenreSelection() {
     const [selected, setSelected] = useState([]);
 
-    const genres = ["Music", "Food", "Art", "Technology", "Sports"];
+    const genres = ["Fictions", "Non-Fiction", "Science", "Technology", "History", "Comics", "Children"];
 
     const toggleGenre = (genre) => {
         setSelected((prev) =>
