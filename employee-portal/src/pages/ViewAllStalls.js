@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../styles/Table.css";
+import "../styles/ViewAllStalls.css";
 
 function ViewAllStalls() {
     const [filter, setFilter] = useState("All");

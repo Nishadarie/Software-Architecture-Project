@@ -6,7 +6,7 @@ import ViewAllStalls from "./ViewAllStalls";
 import Reservations from "./Reservations";
 import UserManagement from "./Usermanagement";
 import GenreSelection from "./GenreSelection";
-import '../styles/Dashboard.css';
+import '../styles/EmployeeDashboard.css';
 
 
 function EmployeeDashboard() {
