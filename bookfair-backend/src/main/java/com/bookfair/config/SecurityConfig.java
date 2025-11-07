@@ -13,35 +13,43 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    // Password encoder bean
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // Security filter chain configuration
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            //Disable CSRF since we’re using JWT
+            // Disable CSRF because we use token-based (stateless) authentication
             .csrf(csrf -> csrf.disable())
 
-            //Define which endpoints are public or protected
+            // Authorization rules
             .authorizeHttpRequests(auth -> auth
+                // Public endpoints
                 .requestMatchers(
-                    "/api/auth/**",
-                    "/v3/api-docs/**",
+                    "/api/auth/**",        // allow register/login
+                    "/v3/api-docs/**",     // Swagger
                     "/swagger-ui/**",
                     "/swagger-ui.html"
                 ).permitAll()
+
+                // All other requests require authentication
                 .anyRequest().authenticated()
             )
 
-            //Stateless session management for JWT
-            .sessionManagement(session -> 
+            // Make the app stateless (no sessions)
+            .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
 
-            //Default basic login (optional — can remove if you’re using JWT filters)
-            .httpBasic(Customizer.withDefaults());
+            // Disable form login and use basic auth temporarily
+            .httpBasic(Customizer.withDefaults())
+
+            // Disable default login form completely (optional but clean)
+            .formLogin(form -> form.disable());
 
         return http.build();
     }

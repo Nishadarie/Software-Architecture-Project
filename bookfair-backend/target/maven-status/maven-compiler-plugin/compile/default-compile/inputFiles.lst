@@ -26,5 +26,6 @@ C:\Users\saths\OneDrive\Desktop\2025 Projects\bcm-dev\Software-Architecture-Proj
 C:\Users\saths\OneDrive\Desktop\2025 Projects\bcm-dev\Software-Architecture-Project\bookfair-backend\src\main\java\com\bookfair\entity\User.java
 C:\Users\saths\OneDrive\Desktop\2025 Projects\bcm-dev\Software-Architecture-Project\bookfair-backend\src\main\java\com\bookfair\service\impl\StallServiceImpl.java
 C:\Users\saths\OneDrive\Desktop\2025 Projects\bcm-dev\Software-Architecture-Project\bookfair-backend\src\main\java\com\bookfair\config\SecurityConfig.java
+C:\Users\saths\OneDrive\Desktop\2025 Projects\bcm-dev\Software-Architecture-Project\bookfair-backend\src\main\java\com\bookfair\exception\GlobalExceptionHandler.java
 C:\Users\saths\OneDrive\Desktop\2025 Projects\bcm-dev\Software-Architecture-Project\bookfair-backend\src\main\java\com\bookfair\repository\ReservationRepository.java
 C:\Users\saths\OneDrive\Desktop\2025 Projects\bcm-dev\Software-Architecture-Project\bookfair-backend\src\main\java\com\bookfair\service\StallService.java
