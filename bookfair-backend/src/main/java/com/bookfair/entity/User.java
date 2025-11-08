@@ -17,4 +17,6 @@ public class User {
     private String password;
     private String role; // USER, EMPLOYEE, ADMIN
     private String businessId;
+    private String businessName; 
+    private String phone;
 }

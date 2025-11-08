@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 
 const Register = () => {
+  const navigate = useNavigate(); // for redirect
   const [formData, setFormData] = useState({
     businessName: "",
-    contactPerson: "",
+    contactPerson: "", // maps to 'name' in backend
     email: "",
     phone: "",
     businessId: "",
@@ -21,7 +22,7 @@ const Register = () => {
   };
 
   // Handle registration
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     const { businessName, contactPerson, email, phone, businessId, password, confirmPassword } =
@@ -37,12 +38,34 @@ const Register = () => {
       return;
     }
 
-    // Save user details locally (demo purpose)
-    localStorage.setItem("user", JSON.stringify(formData));
-    localStorage.setItem("successMessage", "Registration successful! You can now log in.");
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          businessName: businessName,
+          name: contactPerson, // maps to backend 'name'
+          email: email,
+          phone: phone,
+          businessId: businessId,
+          password: password,
+        }),
+      });
 
-    // Redirect to success or login page
-    window.location.href = "/success";
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message || "Registration successful!");
+        navigate("/login"); // redirect to login page
+      } else {
+        alert(data.message || "Registration failed!");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (

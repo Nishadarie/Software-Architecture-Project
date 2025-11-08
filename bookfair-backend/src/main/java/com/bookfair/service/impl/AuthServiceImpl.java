@@ -38,6 +38,9 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(req.email);
         user.setPassword(passwordEncoder.encode(req.password));
         user.setRole("USER");
+        user.setBusinessId(req.businessId);
+        user.setBusinessName(req.businessName);
+        user.setPhone(req.phone);
 
         userRepository.save(user);
 
@@ -49,6 +52,7 @@ public class AuthServiceImpl implements AuthService {
         response.accessToken = accessToken;
         response.refreshToken = refreshToken;
         response.message = "User registered successfully!";
+        response.tokenType = "Bearer";
         return response;
     }
 
@@ -68,6 +72,7 @@ public class AuthServiceImpl implements AuthService {
         response.accessToken = accessToken;
         response.refreshToken = refreshToken;
         response.message = "Login successful!";
+        response.tokenType = "Bearer";
         return response;
     }
 }
