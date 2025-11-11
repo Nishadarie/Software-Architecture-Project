@@ -1,0 +1,30 @@
+.genre-container {
+    text-align: center;
+    padding: 50px;
+}
+
+.genre-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.genre-item.active {
+    background: #4caf50;
+    color: white;
+}
+
+.save-btn {
+    background: #3498db;
+    border: none;
+    padding: 10px 25px;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.save-btn:hover {
+    background: #2980b9;
+}

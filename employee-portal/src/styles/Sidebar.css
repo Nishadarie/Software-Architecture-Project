@@ -1,0 +1,28 @@
+.sidebar {
+    width: 230px;
+    background-color: #1A73E8;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2{
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li{
+    margin: 10px 0;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
