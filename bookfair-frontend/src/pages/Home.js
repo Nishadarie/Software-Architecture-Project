@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
 
 const Home = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -24,10 +23,10 @@ const Home = () => {
             <span style={styles.logoText}>CIBF 2025</span>
           </div>
           <div style={styles.navLinks}>
-            <NavLink to="#about" style={styles.navLink}>About</NavLink>
-            <NavLink to="#features" style={styles.navLink}>Features</NavLink>
-            <NavLink to="#contact" style={styles.navLink}>Contact</NavLink>
-            <NavLink to="/login" style={styles.navButton}>Login</NavLink>
+            <a href="#about" style={styles.navLink}>About</a>
+            <a href="#features" style={styles.navLink}>Features</a>
+            <a href="#contact" style={styles.navLink}>Contact</a>
+            <a href="/login" style={styles.navButton}>Login</a>
           </div>
         </div>
       </nav>
@@ -209,10 +208,10 @@ const Home = () => {
           <p style={styles.ctaText}>
             Join hundreds of exhibitors at Sri Lanka's most prestigious book fair
           </p>
-          <NavLink to="/stall-reservation" style={styles.ctaButton}>
+          <a href="/stall-reservation" style={styles.ctaButton}>
             Reserve Your Stall Now
             <span style={styles.buttonArrow}>→</span>
-          </NavLink>
+          </a>
         </div>
       </section>
 
