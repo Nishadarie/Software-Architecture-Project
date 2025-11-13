@@ -7,7 +7,7 @@ import QRPassModal from "../components/QRPassModal";
 import floorPlan from "../assets/floorplan.png";
 
 export default function ReserveStall() {
-  // ✅ Generate the required stalls
+  // Generate the required stalls
   const generateStalls = () => {
     const stalls = [];
 
@@ -40,11 +40,11 @@ export default function ReserveStall() {
   const [showQRPass, setShowQRPass] = useState(false);
   const [reservedStall, setReservedStall] = useState(null);
 
-  // ✅ Filter states
+  //Filter states
   const [sizeFilter, setSizeFilter] = useState("All");
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
 
-  // ✅ Apply Filters
+  //Apply Filters
   const filteredStalls = stalls.filter((stall) => {
     if (sizeFilter !== "All" && stall.size !== sizeFilter) return false;
     if (showAvailableOnly && !stall.available) return false;
