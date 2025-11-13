@@ -2,11 +2,11 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Home from "./pages/Home"; // ✅ updated import
+import Home from "./pages/Home"; // ✅ Home page
 import ForgotPassword from "./components/ForgotPassword";
 import Success from "./components/Success";
 import Navbar from "./components/Navbar";
-import StallReservation from "./components/StallReservation"; // ✅ Import Stall Reservation
+import ReserveStall from "./pages/ReserveStall"; // ✅ Updated import (from pages)
 import "./Login.css";
 
 function App() {
@@ -33,10 +33,10 @@ function App() {
           element={isAuthenticated ? <Home /> : <Navigate to="/login" replace />}
         />
 
-        {/* ✅ Stall Reservation Page */}
+        {/* ✅ Stall Reservation Page (from /pages) */}
         <Route
           path="/stall-reservation"
-          element={isAuthenticated ? <StallReservation /> : <Navigate to="/login" replace />}
+          element={isAuthenticated ? <ReserveStall /> : <Navigate to="/login" replace />}
         />
       </Routes>
     </BrowserRouter>
