@@ -33,7 +33,7 @@ function EmployeeLogin() {
                     />
                     <input
                     type="password"
-                    placeholder="PassWord"
+                    placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
