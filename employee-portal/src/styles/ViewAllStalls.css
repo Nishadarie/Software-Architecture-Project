@@ -8,37 +8,35 @@ html, body, #root {
 
 .table-container {
   font-family: 'Poppins', sans-serif;
-  background-color: #f3f4f6;
-  height: 100vh;              
+  background-color: #F9FAFB;
+  height: 100vh;
   box-sizing: border-box;
   padding: 20px;
   display: flex;
   flex-direction: column;
 }
 
-
 .table-header {
-  flex: 0 0 auto;             
+  flex: 0 0 auto;
 }
 
-.table-header h2 { color: #1a73e8; margin: 0 0 8px 0; }
+.table-header h2 { color: #008C8C; margin: 0 0 8px 0; }
+
 .filter-bar { margin-bottom: 12px; }
 
 .filter-bar select {
   padding: 8px 12px;
-  border: 1px solid #ccc;
+  border: 1px solid #1F2937;
   border-radius: 6px;
 }
 
-
 .table-scroll-area {
   flex: 1 1 auto;
-  overflow: auto;            
-  background: #fff;
+  overflow: auto;
+  background: #F9FAFB;
   border-radius: 8px;
   padding: 8px;
 }
-
 
 table {
   width: 100%;
@@ -47,25 +45,24 @@ table {
 
 th, td {
   padding: 12px 15px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #1F2937;
   text-align: left;
 }
 
 th {
   position: sticky;
-  top: 0;                     
-  background-color: #1a73e8;
+  top: 0;
+  background-color: #008C8C;
   color: white;
   z-index: 2;
 }
 
-
 .table-scroll-area tr:hover {
-  background-color: #f3f4f6;
+  background-color: #F9FAFB;
 }
 
-.available { color: #4caf50; font-weight: 600; }
-.reserved  { color: #e53935; font-weight: 600; }
+.available { color: #A3E635; font-weight: 600; }
 
+.reserved { color: #1F2937; font-weight: 600; }
 
-body { overflow: hidden; } 
+body { overflow: hidden; }

@@ -1,7 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
 .genre-container {
     text-align: center;
     padding: 50px;
+    font-family: 'Poppins', sans-serif;
+    background: #F9FAFB; 
+    color: #1F2937; 
 }
+
+.genre-container h2 {
+    font-weight: 600;
+    color: #1F2937;
+}
+
 
 .genre-list {
     display: flex;
@@ -11,20 +22,44 @@
     margin: 30px 0;
 }
 
-.genre-item.active {
-    background: #4caf50;
-    color: white;
+
+.genre-item {
+    padding: 12px 22px;
+    border-radius: 8px;
+    background: white;
+    border: 1px solid #D1D5DB;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: 500;
 }
 
+.genre-item:hover {
+    border-color: #008C8C; 
+    box-shadow: 0 2px 8px rgba(0, 140, 140, 0.15);
+}
+
+
+.genre-item.active {
+    background: #A3E635; 
+    color: #1F2937;
+    border-color: #7DC322;
+    font-weight: 600;
+}
+
+
 .save-btn {
-    background: #3498db;
+    background: #008C8C; 
     border: none;
-    padding: 10px 25px;
+    padding: 12px 30px;
     color: white;
     border-radius: 8px;
     cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    transition: 0.25s;
 }
 
 .save-btn:hover {
-    background: #2980b9;
+    background: #006F6F; 
+    transform: translateY(-2px);
 }

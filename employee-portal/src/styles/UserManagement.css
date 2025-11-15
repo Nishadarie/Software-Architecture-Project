@@ -1,46 +1,44 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 .user-management {
   font-family: 'Poppins', sans-serif;
-  background-color: #f3f4f6;
+  background-color: #F9FAFB;
   min-height: 100vh;
   padding: 20px 40px;
 }
 
 .user-management h2 {
-  color: #1a73e8;
+  color: #008C8C;
   margin-bottom: 15px;
 }
-
 
 table {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
+  background: #F9FAFB;
   border-radius: 10px;
   overflow: hidden;
 }
 
 th, td {
   padding: 12px 15px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #1F2937;
 }
 
 th {
-  background-color: #1a73e8;
+  background-color: #008C8C;
   color: white;
   font-weight: 500;
   text-align: left;
 }
 
 tr:hover {
-  background-color: #f3f4f6;
+  background-color: #F9FAFB;
 }
 
 button {
-  background-color: #e53935;
-  color: white;
+  background-color: #A3E635;
+  color: #1F2937;
   border: none;
   border-radius: 6px;
   padding: 6px 12px;
@@ -49,5 +47,5 @@ button {
 }
 
 button:hover {
-  background-color: #c62828;
+  background-color: #8CC92B;
 }

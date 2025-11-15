@@ -1,43 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
 .login-container {
   background: url("../assets/emp_login.jpg") no-repeat center center/cover;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'Poppins', sans-serif;
 }
 
+
 .login-box {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(249, 250, 251, 0.92); 
   padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  width: 360px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   text-align: center;
+  border: 1px solid #E5E7EB; 
 }
+
 
 .login-box h2 {
   margin-bottom: 20px;
-  color: #2c3e50;
+  color: #1F2937; 
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
+
 
 .login-box input {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  padding: 12px;
+  margin: 12px 0;
+  border-radius: 8px;
+  border: 1px solid #D1D5DB;
+  background: #ffffff;
+  font-size: 14px;
 }
+
+.login-box input:focus {
+  outline: none;
+  border: 1px solid #008C8C; 
+  box-shadow: 0 0 4px rgba(0, 140, 140, 0.4);
+}
+
 
 .login-box button {
   width: 100%;
-  padding: 10px;
-  background: #3498db;
+  padding: 12px;
+  background: #008C8C; 
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   color: white;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
+  transition: 0.25s;
 }
 
 .login-box button:hover {
-  background: #2980b9;
+  background: #006F6F; 
+  transform: translateY(-2px);
+}
+
+
+.login-box input:hover {
+  border-color: #A3E635; 
 }

@@ -1,11 +1,11 @@
 .sidebar {
     width: 230px;
-    background-color: #1A73E8;
+    background-color: #008C8C;
     color: white;
     padding: 20px;
 }
 
-.sidebar h2{
+.sidebar h2 {
     margin-bottom: 20px;
 }
 
@@ -14,7 +14,7 @@
     padding: 0;
 }
 
-.sidebar li{
+.sidebar li {
     margin: 10px 0;
 }
 
