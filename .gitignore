@@ -1,3 +1,2 @@
 # Ignore target directory
 bookfair-backend/target/
-bookfair-backend/target/classes/com/bookfair/config/JwtAuthenticationFilter.class
