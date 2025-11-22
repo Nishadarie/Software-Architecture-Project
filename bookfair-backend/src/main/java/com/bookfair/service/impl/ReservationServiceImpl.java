@@ -3,7 +3,9 @@ package com.bookfair.service.impl;
 import com.bookfair.dto.ReservationRequest;
 import com.bookfair.dto.ReservationResponse;
 import com.bookfair.entity.Reservation;
+import com.bookfair.entity.Stall;
 import com.bookfair.repository.ReservationRepository;
+import com.bookfair.repository.StallRepository;
 import com.bookfair.service.ReservationService;
 import com.bookfair.util.QRCodeGenerator;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,14 @@ import java.util.Objects;
 public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final StallRepository stallRepository;
     private final QRCodeGenerator qrCodeGenerator;
 
-    public ReservationServiceImpl(ReservationRepository reservationRepository, QRCodeGenerator qrCodeGenerator) {
+    public ReservationServiceImpl(ReservationRepository reservationRepository, 
+                                  StallRepository stallRepository,
+                                  QRCodeGenerator qrCodeGenerator) {
         this.reservationRepository = reservationRepository;
+        this.stallRepository = stallRepository;
         this.qrCodeGenerator = qrCodeGenerator;
     }
 
@@ -31,16 +37,36 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setBusinessId(Objects.requireNonNull(req.businessId, "Business ID is required"));
         reservation.setUserId(Objects.requireNonNull(req.userId, "User ID is required"));
 
+        final String stallId;
+        final String stallName;
+        
         if (req.stallIds != null && !req.stallIds.isEmpty()) {
-            reservation.setStallId(req.stallIds.get(0));
+            stallId = req.stallIds.get(0);
+            reservation.setStallId(stallId);
+            
+            // Update stall status to RESERVED
+            Stall stall = stallRepository.findById(stallId)
+                    .orElseThrow(() -> new RuntimeException("Stall not found: " + stallId));
+            stall.setStatus("RESERVED");
+            stallRepository.save(stall);
+            stallName = stall.getName() != null ? stall.getName() : stallId;
+        } else {
+            stallId = null;
+            stallName = null;
         }
 
         Reservation saved = reservationRepository.save(reservation);
+
+        // Generate QR code immediately upon reservation creation
+        String qrCodeBase64 = qrCodeGenerator.generateBase64ForReservation(saved);
 
         ReservationResponse response = new ReservationResponse();
         response.success = true;
         response.reservationId = saved.getId();
         response.status = saved.getStatus();
+        response.qrCodeBase64 = qrCodeBase64;
+        response.stallId = stallId;
+        response.stallName = stallName;
 
         return response;
     }

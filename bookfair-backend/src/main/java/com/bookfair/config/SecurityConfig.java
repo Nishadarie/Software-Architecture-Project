@@ -33,8 +33,10 @@ public class SecurityConfig {
 
             // Allow public endpoints
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // Allow all OPTIONS requests for CORS preflight
                 .requestMatchers(
                     "/api/auth/**",
+                    "/api/stalls/initialize",
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html"

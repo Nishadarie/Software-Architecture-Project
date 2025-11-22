@@ -49,3 +49,31 @@ button {
 button:hover {
   background-color: #8CC92B;
 }
+
+.deactivate-btn {
+  background-color: #ff7043;
+  color: white;
+}
+
+.deactivate-btn:hover {
+  background-color: #e64a19;
+}
+
+.activate-btn {
+  background-color: #A3E635;
+  color: #1F2937;
+}
+
+.activate-btn:hover {
+  background-color: #8CC92B;
+}
+
+.active {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.inactive {
+  color: #ef4444;
+  font-weight: 600;
+}
