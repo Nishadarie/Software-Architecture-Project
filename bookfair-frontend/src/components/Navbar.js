@@ -1,13 +1,38 @@
 // src/components/Navbar.js
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
-  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem("isAuthenticated") === "true"
+  );
+
+  useEffect(() => {
+    // Check authentication state on mount
+    const checkAuth = () => {
+      setIsAuthenticated(localStorage.getItem("isAuthenticated") === "true");
+    };
+    
+    checkAuth();
+    
+    // Listen for storage changes (when user logs in/out)
+    window.addEventListener("storage", checkAuth);
+    
+    // Also check periodically in case localStorage was changed in the same tab
+    const interval = setInterval(checkAuth, 1000);
+    
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+      clearInterval(interval);
+    };
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    setIsAuthenticated(false);
     window.location.href = "/login";
   };
 

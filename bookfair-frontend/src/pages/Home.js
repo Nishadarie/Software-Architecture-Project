@@ -2,12 +2,36 @@ import React, { useState, useEffect } from "react";
 
 const Home = () => {
   const [scrollY, setScrollY] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    // Check authentication state
+    const authStatus = localStorage.getItem("isAuthenticated") === "true";
+    setIsAuthenticated(authStatus);
+    
+    // Listen for storage changes (when user logs in/out in another tab)
+    const handleStorageChange = () => {
+      const authStatus = localStorage.getItem("isAuthenticated") === "true";
+      setIsAuthenticated(authStatus);
+    };
+    window.addEventListener("storage", handleStorageChange);
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    setIsAuthenticated(false);
+    window.location.href = "/login";
+  };
 
   return (
     <div style={styles.pageContainer}>
@@ -26,7 +50,13 @@ const Home = () => {
             <a href="#about" style={styles.navLink}>About</a>
             <a href="#features" style={styles.navLink}>Features</a>
             <a href="#contact" style={styles.navLink}>Contact</a>
-            <a href="/login" style={styles.navButton}>Login</a>
+            {isAuthenticated ? (
+              <button onClick={handleLogout} style={styles.navButtonLogout}>
+                Logout
+              </button>
+            ) : (
+              <a href="/login" style={styles.navButton}>Login</a>
+            )}
           </div>
         </div>
       </nav>
@@ -384,6 +414,19 @@ const styles = {
     fontSize: "15px",
     fontWeight: "600",
     transition: "all 0.3s",
+    border: "none",
+    cursor: "pointer",
+  },
+  navButtonLogout: {
+    backgroundColor: "#ff7043",
+    color: "#F9FAFB",
+    padding: "10px 24px",
+    borderRadius: "8px",
+    fontSize: "15px",
+    fontWeight: "600",
+    transition: "all 0.3s",
+    border: "none",
+    cursor: "pointer",
   },
   heroSection: {
     position: "relative",
