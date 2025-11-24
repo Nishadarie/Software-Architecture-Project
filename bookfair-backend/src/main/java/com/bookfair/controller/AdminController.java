@@ -1,23 +1,24 @@
 package com.bookfair.controller;
 
-import com.bookfair.entity.User;
-import com.bookfair.repository.UserRepository;
+import com.bookfair.dto.*;
+import com.bookfair.entity.Audit;
+import com.bookfair.service.AdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    private final UserRepository userRepository;
+    private final AdminService adminService;
 
-    public AdminController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AdminController(AdminService adminService){
+        this.adminService = adminService;
     }
 
     @GetMapping("/health")
@@ -25,72 +26,118 @@ public class AdminController {
         return ResponseEntity.ok("admin ok");
     }
 
+    // ---------------------------
+    // USERS / EMPLOYEES
+    // ---------------------------
+
     @GetMapping("/users")
-    public ResponseEntity<Map<String, Object>> getAllUsers() {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            List<User> users = userRepository.findAll();
-            List<Map<String, Object>> userList = users.stream()
-                    .map(user -> {
-                        Map<String, Object> userMap = new HashMap<>();
-                        userMap.put("id", user.getId());
-                        userMap.put("name", user.getName());
-                        userMap.put("email", user.getEmail());
-                        userMap.put("businessName", user.getBusinessName());
-                        userMap.put("phone", user.getPhone());
-                        userMap.put("status", user.getStatus() != null ? user.getStatus() : "ACTIVE");
-                        userMap.put("role", user.getRole());
-                        return userMap;
-                    })
-                    .collect(Collectors.toList());
-            
-            response.put("success", true);
-            response.put("data", userList);
-            return ResponseEntity.ok(response);
-        } catch (Exception ex) {
-            response.put("success", false);
-            response.put("error", ex.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+    public ResponseEntity<Map<String, Object>> getAllUsers(){
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", adminService.getAllUsers());
+        return ResponseEntity.ok(resp);
     }
 
-    @PutMapping("/users/{id}/deactivate")
-    public ResponseEntity<Map<String, Object>> deactivateUser(@PathVariable String id) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            User user = userRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-            
-            user.setStatus("INACTIVE");
-            userRepository.save(user);
-            
-            response.put("success", true);
-            response.put("message", "User deactivated successfully");
-            return ResponseEntity.ok(response);
-        } catch (Exception ex) {
-            response.put("success", false);
-            response.put("error", ex.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+    @GetMapping("/employees")
+    public ResponseEntity<Map<String, Object>> getEmployees(){
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", adminService.getEmployees());
+        return ResponseEntity.ok(resp);
+    }
+
+    @PutMapping("/users/{id}/promote")
+    public ResponseEntity<Map<String, Object>> promoteToEmployee(
+            @PathVariable String id, Principal principal){
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", adminService.promoteToEmployee(id, principal.getName()));
+        return ResponseEntity.ok(resp);
+    }
+
+    @PutMapping("/users/{id}/promote-admin")
+    public ResponseEntity<Map<String, Object>> promoteToAdmin(
+            @PathVariable String id, Principal principal){
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", adminService.promoteToAdmin(id, principal.getName()));
+        return ResponseEntity.ok(resp);
+    }
+
+    @PutMapping("/users/{id}/demote")
+    public ResponseEntity<Map<String, Object>> demote(
+            @PathVariable String id, Principal principal){
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", adminService.demoteUser(id, principal.getName()));
+        return ResponseEntity.ok(resp);
     }
 
     @PutMapping("/users/{id}/activate")
-    public ResponseEntity<Map<String, Object>> activateUser(@PathVariable String id) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            User user = userRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-            
-            user.setStatus("ACTIVE");
-            userRepository.save(user);
-            
-            response.put("success", true);
-            response.put("message", "User activated successfully");
-            return ResponseEntity.ok(response);
-        } catch (Exception ex) {
-            response.put("success", false);
-            response.put("error", ex.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+    public ResponseEntity<Map<String, Object>> activate(
+            @PathVariable String id, Principal principal){
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", adminService.activateUser(id, principal.getName()));
+        return ResponseEntity.ok(resp);
+    }
+
+    @PutMapping("/users/{id}/deactivate")
+    public ResponseEntity<Map<String, Object>> deactivate(
+            @PathVariable String id, Principal principal){
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", adminService.deactivateUser(id, principal.getName()));
+        return ResponseEntity.ok(resp);
+    }
+
+    @PostMapping("/employees")
+    public ResponseEntity<Map<String, Object>> createEmployee(
+            @RequestBody CreateEmployeeRequest request, Principal principal){
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", adminService.createEmployee(request, principal.getName()));
+        return ResponseEntity.ok(resp);
+    }
+
+    // ---------------------------
+    // REPORTS
+    // ---------------------------
+
+    @GetMapping("/report/summary")
+    public ResponseEntity<Map<String, Object>> summary(){
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", adminService.getSummaryReport());
+        return ResponseEntity.ok(resp);
+    }
+
+    @GetMapping("/report/stalls-by-size")
+    public ResponseEntity<Map<String, Object>> stallsBySize(){
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", adminService.getStallsBySizeReport());
+        return ResponseEntity.ok(resp);
+    }
+
+    @GetMapping("/report/reservations-by-business")
+    public ResponseEntity<Map<String, Object>> reservationsByBusiness(){
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", adminService.getReservationsByBusinessReport());
+        return ResponseEntity.ok(resp);
+    }
+
+    // ---------------------------
+    // AUDIT
+    // ---------------------------
+
+    @GetMapping("/audits")
+    public ResponseEntity<Map<String, Object>> audits(){
+        Map<String, Object> resp = new HashMap<>();
+        List<Audit> logs = adminService.getAuditLogs();
+        resp.put("success", true);
+        resp.put("data", logs);
+        return ResponseEntity.ok(resp);
     }
 }
