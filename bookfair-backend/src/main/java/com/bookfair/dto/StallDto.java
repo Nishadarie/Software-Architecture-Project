@@ -1,9 +1,11 @@
 package com.bookfair.dto;
+import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
 public class StallDto {
-    public String id;
+    @Id
+    private String id;
     public String name;
     public String size;
     public String status;
@@ -12,4 +14,5 @@ public class StallDto {
     public Integer price;
     public String reservedBy; // Business name of the user who reserved
     public String contact; // Email of the user who reserved
+
 }
