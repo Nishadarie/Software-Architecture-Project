@@ -12,4 +12,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, String
     List<Reservation> findByStallId(String stallId);
     long countByStatus(String status);
     List<Reservation> findByBusinessId(String businessId);
+    boolean existsByStallId(String stallId);
+    boolean existsByStallIdAndStatus(String stallId, String status);
+    long countByStallIdAndStatus(String stallId, String status);
+
 }
