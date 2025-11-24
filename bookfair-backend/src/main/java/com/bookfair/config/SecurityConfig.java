@@ -39,6 +39,7 @@ public class SecurityConfig {
                         // ADMIN PROTECTED ENDPOINTS — MOST SPECIFIC FIRST
                         .requestMatchers("/api/admin/report/**").hasRole("ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/stalls/**").hasAuthority("ROLE_ADMIN")
 
                         // PUBLIC ENDPOINTS
                         .requestMatchers(
