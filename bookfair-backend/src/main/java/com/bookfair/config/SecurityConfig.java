@@ -32,17 +32,18 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
 
             // Allow public endpoints
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // Allow all OPTIONS requests for CORS preflight
-                .requestMatchers(
-                    "/api/auth/**",
-                    "/api/stalls/initialize",
-                    "/v3/api-docs/**",
-                    "/swagger-ui/**",
-                    "/swagger-ui.html"
-                ).permitAll()
-                .anyRequest().authenticated()
-            )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/api/stalls/initialize",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                        .anyRequest().authenticated()
+                )
 
             // Stateless session management
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
