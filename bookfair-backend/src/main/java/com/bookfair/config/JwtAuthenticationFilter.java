@@ -39,6 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String header = request.getHeader("Authorization");
 
+
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             try {
@@ -46,7 +47,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String userId = claims.getSubject();
                 String role = claims.get("role", String.class);
 
-                var authorities = List.of(new SimpleGrantedAuthority(role));
+                var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+
+                System.out.println("ROLE FROM TOKEN = " + role);
+                System.out.println("Authorities = " + authorities);
 
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(userId, null, authorities);
@@ -54,7 +58,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
+                System.out.println("Authorities = " + authorities);
+
+
+
             } catch (Exception ex) {
+
+
+
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json");
                 response.getWriter().write("{\"success\":false,\"error\":\"" + ex.getMessage() + "\"}");
