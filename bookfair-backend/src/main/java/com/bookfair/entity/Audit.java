@@ -20,6 +20,9 @@ public class Audit {
     private String targetId;      // id of affected entity
     private String description;   // readable summary
     private Instant timestamp;
+    private String performedBy;
+    private String details;
+
 
     @PrePersist
     public void onCreate() {
