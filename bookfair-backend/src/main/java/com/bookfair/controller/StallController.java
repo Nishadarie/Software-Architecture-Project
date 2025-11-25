@@ -53,4 +53,21 @@ public class StallController {
             return ResponseEntity.badRequest().body(response);
         }
     }
+
+    @PostMapping("/initialize")
+    public ResponseEntity<Map<String, Object>> initializeStalls(){
+        Map<String, Object> response = new HashMap<>();
+        try {
+            int created = stallService.initializeDefaultStalls();
+            response.put("success", true);
+            response.put("message", "Initialized " + created + " stalls successfully");
+            response.put("count", created);
+            return ResponseEntity.ok(response);
+        } catch (Exception ex) {
+            log.error("Error initializing stalls", ex);
+            response.put("success", false);
+            response.put("error", ex.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
 }

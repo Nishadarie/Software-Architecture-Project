@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // Modern Sidebar Filters Component
 const SidebarFilters = ({ sizeFilter, setSizeFilter, showAvailableOnly, setShowAvailableOnly }) => {
@@ -124,7 +124,7 @@ const StallMap = ({ stalls, onSelectStall, selectedStallId }) => {
                 : "0 2px 4px rgba(0,0,0,0.05)",
             }}
           >
-            <div style={styles.stallId}>{stall.id}</div>
+            <div style={styles.stallId}>{stall.name || stall.id}</div>
             <div style={styles.stallSize}>{stall.size}</div>
           </button>
         ))}
@@ -247,7 +247,7 @@ const Toast = ({ message, actionLabel, onAction, onClose }) => {
 };
 
 // Modern QR Pass Modal Component
-const QRPassModal = ({ stall, onClose }) => {
+const QRPassModal = ({ stall, qrCodeBase64, onClose }) => {
   return (
     <div style={styles.modalOverlay} onClick={onClose}>
       <div style={styles.qrModal} onClick={(e) => e.stopPropagation()}>
@@ -266,8 +266,18 @@ const QRPassModal = ({ stall, onClose }) => {
           </div>
           
           <div style={styles.qrCodePlaceholder}>
-            <div style={styles.qrPattern}></div>
-            <span style={styles.qrText}>QR CODE</span>
+            {qrCodeBase64 ? (
+              <img 
+                src={`data:image/png;base64,${qrCodeBase64}`} 
+                alt="QR Code" 
+                style={styles.qrCodeImage}
+              />
+            ) : (
+              <>
+                <div style={styles.qrPattern}></div>
+                <span style={styles.qrText}>QR CODE</span>
+              </>
+            )}
           </div>
 
           <div style={styles.passDetails}>
@@ -302,40 +312,113 @@ const QRPassModal = ({ stall, onClose }) => {
 
 // Main Reserve Stall Component
 export default function ReserveStall() {
-  const generateStalls = () => {
-    const stalls = [];
+  const [stalls, setStalls] = useState([]);
+  const [selectedStall, setSelectedStall] = useState(null);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showQRPass, setShowQRPass] = useState(false);
+  const [reservedStall, setReservedStall] = useState(null);
+  const [qrCodeBase64, setQrCodeBase64] = useState(null);
+  const [sizeFilter, setSizeFilter] = useState("All");
+  const [showAvailableOnly, setShowAvailableOnly] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch stalls from backend on component mount
+  useEffect(() => {
+    loadStalls();
+  }, []);
+
+  const loadStalls = async () => {
+    try {
+      setLoading(true);
+      const accessToken = localStorage.getItem("accessToken");
+      
+      // Check if user is logged in
+      if (!accessToken) {
+        console.warn("No access token found, user may not be logged in");
+        generateDefaultStalls();
+        setLoading(false);
+        return;
+      }
+      
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8083'}/api/stalls`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.data) {
+          // Map backend stalls to frontend format
+          const mappedStalls = data.data.map(stall => ({
+            id: stall.id,
+            name: stall.name || stall.id,
+            size: stall.size || "Medium",
+            price: stall.price || 10000,
+            available: stall.status === "AVAILABLE"
+          }));
+          setStalls(mappedStalls);
+        } else {
+          // If no stalls exist, generate some for demo
+          generateDefaultStalls();
+        }
+      } else {
+        console.warn("Failed to load stalls from API, using default stalls");
+        // If API fails, generate default stalls
+        generateDefaultStalls();
+      }
+    } catch (error) {
+      console.error("Error loading stalls:", error);
+      if (error.message === "Failed to fetch") {
+        console.warn("Backend not reachable, using default stalls. Make sure backend is running on http://localhost:8083");
+      }
+      // If error, generate default stalls
+      generateDefaultStalls();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const generateDefaultStalls = () => {
+    const defaultStalls = [];
     for (let i = 1; i <= 80; i++) {
-      stalls.push({
+      defaultStalls.push({
         id: `A${String(i).padStart(2, "0")}`,
+        name: `A${String(i).padStart(2, "0")}`,
         size: i <= 30 ? "Small" : i <= 55 ? "Medium" : "Large",
         price: i <= 30 ? 10000 : i <= 55 ? 15000 : 25000,
         available: Math.random() > 0.3,
       });
     }
     for (let i = 81; i <= 138; i++) {
-      stalls.push({
+      defaultStalls.push({
         id: `B${i}`,
+        name: `B${i}`,
         size: i <= 100 ? "Small" : i <= 120 ? "Medium" : "Large",
         price: i <= 100 ? 10000 : i <= 120 ? 15000 : 25000,
         available: Math.random() > 0.3,
       });
     }
-    return stalls;
+    setStalls(defaultStalls);
   };
-
-  const [stalls, setStalls] = useState(generateStalls());
-  const [selectedStall, setSelectedStall] = useState(null);
-  const [toastMessage, setToastMessage] = useState("");
-  const [showQRPass, setShowQRPass] = useState(false);
-  const [reservedStall, setReservedStall] = useState(null);
-  const [sizeFilter, setSizeFilter] = useState("All");
-  const [showAvailableOnly, setShowAvailableOnly] = useState(false);
 
   const filteredStalls = stalls.filter((stall) => {
     if (sizeFilter !== "All" && stall.size !== sizeFilter) return false;
     if (showAvailableOnly && !stall.available) return false;
     return true;
   });
+
+  if (loading) {
+    return (
+      <div style={styles.pageContainer}>
+        <div style={{ textAlign: "center", padding: "50px" }}>
+          <h2>Loading stalls...</h2>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={styles.pageContainer}>
@@ -384,13 +467,65 @@ export default function ReserveStall() {
         <StallModal
           stall={selectedStall}
           onClose={() => setSelectedStall(null)}
-          onConfirm={(formData) => {
-            setStalls(stalls.map((s) =>
-              s.id === selectedStall.id ? { ...s, available: false, ...formData } : s
-            ));
-            setReservedStall(selectedStall);
-            setSelectedStall(null);
-            setToastMessage("✅ Reservation successful!");
+          onConfirm={async (formData) => {
+            try {
+              const accessToken = localStorage.getItem("accessToken");
+              
+              // Check if user is logged in
+              if (!accessToken) {
+                alert("Please log in first to make a reservation.");
+                return;
+              }
+              
+              const response = await fetch(`${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8083'}/api/reservations`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({
+                  businessId: formData.businessName, // You may need to adjust this
+                  stallIds: [selectedStall.id]
+                })
+              });
+
+              const data = await response.json();
+
+              if (response.ok && data.success) {
+                // Update local state
+                setStalls(stalls.map((s) =>
+                  s.id === selectedStall.id ? { ...s, available: false, ...formData } : s
+                ));
+                
+                // Store reservation data with QR code
+                const reservationData = {
+                  ...selectedStall,
+                  ...formData,
+                  reservationId: data.reservationId,
+                  qrCodeBase64: data.qrCodeBase64
+                };
+                
+                setReservedStall(reservationData);
+                setQrCodeBase64(data.qrCodeBase64);
+                setSelectedStall(null);
+                setToastMessage("✅ Reservation successful!");
+              } else {
+                const errorMsg = data.error || data.message || "Reservation failed. Please try again.";
+                console.error("Reservation failed:", errorMsg);
+                alert(errorMsg);
+              }
+            } catch (error) {
+              console.error("Reservation error:", error);
+              let errorMsg = "Something went wrong. Please try again.";
+              
+              if (error.message === "Failed to fetch") {
+                errorMsg = "Cannot connect to the backend server.\n\nPlease make sure:\n1. Backend is running on http://localhost:8083\n2. No firewall is blocking the connection\n3. Backend has been restarted after recent changes";
+              } else if (error.message) {
+                errorMsg = error.message;
+              }
+              
+              alert(errorMsg);
+            }
           }}
         />
       )}
@@ -408,7 +543,7 @@ export default function ReserveStall() {
       )}
 
       {showQRPass && reservedStall && (
-        <QRPassModal stall={reservedStall} onClose={() => setShowQRPass(false)} />
+        <QRPassModal stall={reservedStall} qrCodeBase64={qrCodeBase64} onClose={() => setShowQRPass(false)} />
       )}
     </div>
   );
@@ -959,6 +1094,11 @@ const styles = {
     fontWeight: "700",
     color: "#6B7280",
     letterSpacing: "2px",
+  },
+  qrCodeImage: {
+    width: "100%",
+    height: "100%",
+    objectFit: "contain",
   },
   passDetails: {
     display: "flex",

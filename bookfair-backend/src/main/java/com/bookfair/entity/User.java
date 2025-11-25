@@ -16,6 +16,7 @@ public class User {
     private String email;
     private String password;
     private String role; // USER, EMPLOYEE, ADMIN
+    private String status = "ACTIVE"; // ACTIVE, INACTIVE
     private String businessId;
     private String businessName; 
     private String phone;

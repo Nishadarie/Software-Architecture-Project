@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./pages/Home"; // ✅ Home page
@@ -9,13 +9,15 @@ import Navbar from "./components/Navbar";
 import ReserveStall from "./pages/ReserveStall"; // ✅ Updated import (from pages)
 import "./Login.css";
 
-function App() {
+function AppContent() {
+  const location = useLocation();
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  const showNavbar = location.pathname !== "/home";
 
   return (
-    <BrowserRouter>
-      {/* ✅ Navbar visible on all pages */}
-      <Navbar />
+    <>
+      {/*  */}
+      {showNavbar && <Navbar />}
 
       <Routes>
         {/* Redirect root path to login */}
@@ -39,6 +41,14 @@ function App() {
           element={isAuthenticated ? <ReserveStall /> : <Navigate to="/login" replace />}
         />
       </Routes>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }
