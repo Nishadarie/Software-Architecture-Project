@@ -11,27 +11,44 @@
 .login-card {
   width: 100%;
   max-width: 420px;
-  background: white;
+  background: #064e3b; /* dark green background */
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 8px 24px rgba(20,20,40,0.08);
   display: flex;
   flex-direction: column;
   gap: 12px;
+  color: #ffffff; /* make text white for contrast */
 }
 
-.login-card h2 { margin: 0 0 8px 0; }
+.login-card h2 {
+  margin: 0 0 8px 0;
+  color: #ffffff; /* ensure heading is visible */
+}
 
-.login-card label { font-size: 0.9rem; margin-top: 6px; }
+.login-card label {
+  font-size: 0.9rem;
+  margin-top: 6px;
+  color: #d1fae5; /* lighter green text for labels */
+}
+
 .login-card input {
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid #dfe6ef;
+  border: 1px solid #10b981; /* soft green border */
   font-size: 1rem;
   outline: none;
+  background: #065f46; /* input background dark green */
+  color: #ffffff; /* input text white */
 }
 
-.pw-row { display:flex; gap:8px; align-items:center; }
+
+.pw-row {
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
 .pw-row .pw-toggle {
   padding: 9px 10px;
   border-radius: 8px;
@@ -44,12 +61,20 @@
   margin-top: 8px;
   padding: 12px;
   border-radius: 10px;
-  border: none;
+  border: 1px solid #065f46; /* optional: matching dark green border */
   cursor: pointer;
   font-weight: 600;
-  background: #0077ff;
-  color: white;
+  background: #065f46; /* dark green */
+  color: #ffffff; /* white text for contrast */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transition: background 0.3s, transform 0.2s;
 }
+
+.login-btn:hover {
+  background: #054f39; /* slightly darker green on hover */
+  transform: translateY(-2px);
+}
+
 
 .login-error {
   background: #ffecec;
@@ -58,4 +83,8 @@
   border-radius: 8px;
 }
 
-.hint { font-size: 0.85rem; color: #555; margin: 8px 0 0 0; }
+.hint {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 8px 0 0 0;
+}
