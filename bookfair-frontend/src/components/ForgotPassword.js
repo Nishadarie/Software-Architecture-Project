@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Added
-import "./Login.css";
+import { useNavigate } from "react-router-dom"; 
+import "./Login.css"; // make sure this is the dark green version
 
 const ForgotPassword = () => {
   const [username, setUsername] = useState("");
@@ -8,7 +8,7 @@ const ForgotPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate(); // ✅ Added this line
+  const navigate = useNavigate();
 
   const handleReset = (e) => {
     e.preventDefault();
@@ -24,13 +24,13 @@ const ForgotPassword = () => {
       return;
     }
 
-    // ✅ Update password in localStorage
+    // Update password in localStorage
     localStorage.setItem(
       "user",
       JSON.stringify({ username, password: newPassword })
     );
 
-    // ✅ Redirect to success page with message
+    // Redirect to success page with message
     navigate("/success", {
       state: { message: "Password has been reset successfully!" },
     });
@@ -65,19 +65,20 @@ const ForgotPassword = () => {
           />
         </div>
 
-        <label>
+        <label style={{ color: "#d1fae5", marginTop: "8px" }}>
           <input
             type="checkbox"
             checked={showPassword}
             onChange={() => setShowPassword(!showPassword)}
+            style={{ marginRight: "8px" }}
           />
           Show Passwords
         </label>
 
         <button type="submit">Reset Password</button>
 
-        <p style={{ marginTop: "15px" }}>
-          Remembered your password? <a href="/login">Login here</a>
+        <p style={{ marginTop: "15px", color: "#d1fae5" }}>
+          Remembered your password? <a href="/login" style={{ color: "#10b981" }}>Login here</a>
         </p>
       </form>
     </div>
